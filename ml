@@ -279,6 +279,8 @@ show_top_help() {
     echo "AI:"
     echo "  install ai       Install Free Claude Code"
     echo "  --ai             Start uvicorn + Claude Code (visible)"
+    echo "  --ai server      Start uvicorn only (no Claude Code)"
+    echo "  --ai server bg   Start uvicorn only, in the background"
     echo "  --ai claude      Start Claude Code in current directory (bg uvicorn)"
     echo "  --ai bg          Start both in background"
     echo "  --ai stop        Stop all processes"
@@ -301,6 +303,8 @@ show_help_command() {
         wb)         show_help_wb ;;
         --ai)       echo "Usage: ml --ai [subcommand]"
                     echo "  (no arg)  Start uvicorn + Claude Code (both visible)"
+                    echo "  server    Start uvicorn only (no Claude Code)"
+                    echo "  server bg Start uvicorn only, in the background"
                     echo "  claude    Start bg uvicorn, Claude Code in current working directory"
                     echo "  bg        Start both in background"
                     echo "  stop      Stop all processes"
@@ -751,7 +755,7 @@ cmd_ai() {
         echo "ml: failed to fetch AI helper" >&2
         exit 1
     fi
-    "$PHP_EXE" "$tmp_file" "$sub"
+    "$PHP_EXE" "$tmp_file" "$sub" "${2:-}"
     local rc=$?
     rm -f "$tmp_file"
     check_free_cc_updates

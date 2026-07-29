@@ -81,6 +81,8 @@ if /I "%~1"=="--ai" goto :cmd_ai
 |-------------|--------|----------|
 | `ml install ai` | Downloads and runs `ai-installer.php` | Line 44 |
 | `ml --ai` | Starts fcc-server and fcc-claude (both visible) | Line 27 → `:cmd_ai` |
+| `ml --ai server` | Starts fcc-server only (no Claude Code) | Line 27 → `:cmd_ai` → `ai-commands.php server` |
+| `ml --ai server bg` | Starts fcc-server only, in the background | Line 27 → `:cmd_ai` → `ai-commands.php server bg` |
 | `ml --ai update` | Pulls latest from free-claude-code git | Line 26 → `:cmd_ai_update` |
 | `ml --ai help` | Shows integrated AI help | Via `:help_ai` (lines 264-286) |
 
@@ -364,6 +366,8 @@ Once installed, you can use:
 
 ```bash
 ml --ai              # Start server + Claude Code (visible)
+ml --ai server       # Start server only (no Claude Code)
+ml --ai server bg    # Start server only, in the background
 ml --ai claude       # Start Claude Code in current directory
 ml --ai bg           # Start both in background
 ml --ai codex        # Start Codex in current directory
@@ -440,6 +444,8 @@ function isUnix(): bool      // !isWindows()
 
 ```
    --ai               Start uvicorn + Claude Code (visible)
+   --ai server        Start uvicorn only (no Claude Code)
+   --ai server bg     Start uvicorn only, in the background
    --ai claude        Start Claude Code in current directory (bg uvicorn)
    --ai bg            Start both in background
    --ai admin       Open Free Claude Code admin panel in browser

@@ -34,7 +34,10 @@
       "Bash(Select-Object -First 5)",
       "Bash(Remove-Item -Path \"C:\\\\xampp\\\\htdocs\\\\mlhuillier\\\\test_strict\" -Recurse -Force -ErrorAction SilentlyContinue)",
       "Bash(grep -E \"server|\\\\.py$\")",
-      "Bash(dir \"C:\\\\free-claude-code\\\\free-claude-code\")"
+      "Bash(dir \"C:\\\\free-claude-code\\\\free-claude-code\")",
+      "Bash(\"C:/xampp/php/php.exe\" -l C:/xampp/htdocs/mlhuillier/ai-commands.php)",
+      "Bash(cmd //c \"ml.bat --h --ai\")",
+      "Bash(cmd //c \"C:\\\\xampp\\\\htdocs\\\\mlhuillier\\\\ml.bat --h --ai\" 2>&1)"
     ]
   }
 }

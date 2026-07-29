@@ -1,6 +1,6 @@
 <?php
 // ai-commands.php
-// Usage: php ai-commands.php [claude|bg|stop|restart|cm|key|codex|admin|update-info]
+// Usage: php ai-commands.php [claude|server|bg|codex|stop|restart|cm|key|admin|update-info]
 // Works on Windows (PowerShell), macOS, and Linux (bash/sh).
 
 const FCC_INSTALL_DIR = 'C:\\free-claude-code\\free-claude-code';
@@ -334,6 +334,28 @@ function startCodexWindows(bool $visible): void
     echo 'CLI: Free Claude Code (Codex) started.' . PHP_EOL;
 }
 
+function startServerOnlyWindows(bool $visible): void
+{
+    ensureInstalled();
+
+    // Start fcc-server only (no Claude Code / Codex process).
+    $serverPs = writeScript('ml-ai-fcc-server', fccServerScript());
+
+    $state = [
+        'started_at' => date(DATE_ATOM),
+        'scripts'   => [$serverPs],
+        'pids'      => [],
+    ];
+
+    $serverPid = startPowerShellScript($serverPs, $visible);
+    if ($serverPid > 0) {
+        $state['pids'][] = $serverPid;
+    }
+
+    saveState($state);
+    echo 'CLI: fcc-server started.' . PHP_EOL;
+}
+
 function stopAiWindows(): void
 {
     $state = loadState();
@@ -528,6 +550,59 @@ function startCodexUnix(bool $visible): void
     echo "CLI: fcc-codex started." . PHP_EOL;
 }
 
+function startServerOnlyUnix(bool $visible): void
+{
+    ensureInstalled();
+
+    $installDir = aiInstallDir();
+    $logDir = mlHome() . DIRECTORY_SEPARATOR . 'logs';
+    if (!is_dir($logDir)) {
+        mkdir($logDir, 0755, true);
+    }
+
+    $state = [
+        'started_at' => date(DATE_ATOM),
+        'pids'       => [],
+    ];
+
+    $serverCmd = fccServerCommand();
+
+    if ($visible) {
+        if (isMac()) {
+            exec("osascript -e 'tell app \"Terminal\" to do script \"cd " . escapeshellarg($installDir) . " && uv run " . FCC_PROJECT_FLAG . " fcc-server\"' 2>/dev/null");
+        } else {
+            $terminals = ['konsole', 'gnome-terminal', 'xfce4-terminal'];
+            $found = false;
+            foreach ($terminals as $term) {
+                if (commandExists($term)) {
+                    if ($term === 'konsole') {
+                        exec("$term -e 'bash -c " . escapeshellarg($serverCmd) . "' 2>/dev/null &");
+                    } else {
+                        exec("$term -- bash -c " . escapeshellarg($serverCmd) . " 2>/dev/null &");
+                    }
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                exec("nohup bash -c " . escapeshellarg($serverCmd) . " >> " . escapeshellarg($logDir . '/fcc-server.log') . " 2>&1 &");
+            }
+        }
+        $serverPid = 0;
+    } else {
+        $serverLogFile = $logDir . '/fcc-server.log';
+        exec("nohup bash -c " . escapeshellarg($serverCmd) . " >> " . escapeshellarg($serverLogFile) . " 2>&1 &");
+        $serverPid = (int)@exec("pgrep -f 'fcc-server.*free-claude-code' | tail -1");
+        if ($serverPid > 0) {
+            $state['pids'][] = $serverPid;
+            @file_put_contents(sys_get_temp_dir() . '/ml-ai-fcc-server.pid', (string)$serverPid);
+        }
+    }
+
+    saveState($state);
+    echo "CLI: fcc-server started." . PHP_EOL;
+}
+
 function stopAiUnix(): void
 {
     $state = loadState();
@@ -690,6 +765,15 @@ switch ($subcommand) {
         }
         exit(0);
 
+    case 'server':
+        $background = (strtolower(trim((string)($argv[2] ?? ''))) === 'bg');
+        if (isWindows()) {
+            startServerOnlyWindows(!$background);
+        } else {
+            startServerOnlyUnix(!$background);
+        }
+        exit(0);
+
     case 'stop':
         if (isWindows()) {
             stopAiWindows();
@@ -726,6 +810,6 @@ switch ($subcommand) {
 
     default:
         fwrite(STDERR, 'Unknown ml --ai subcommand: ' . $subcommand . PHP_EOL);
-        fwrite(STDERR, 'Use: ml --ai [claude|bg|codex|stop|restart|cm|key|admin|update-info]' . PHP_EOL);
+        fwrite(STDERR, 'Use: ml --ai [claude|server|bg|codex|stop|restart|cm|key|admin|update-info]' . PHP_EOL);
         exit(2);
 }

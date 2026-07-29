@@ -269,6 +269,8 @@ ml serve -o       (share via ngrok tunnel)
 
 - `ml install ai` : install Free Claude Code stack (`C:\free-claude-code\free-claude-code` on Windows, `~/.free-claude-code/free-claude-code` on macOS/Linux)
 - `ml --ai` : start fcc-server and fcc-claude (both visible)
+- `ml --ai server` : start fcc-server only (no Claude Code)
+- `ml --ai server bg` : start fcc-server only, in the background
 - `ml --ai claude` : start fcc-claude only (server must be running)
 - `ml --ai bg` : start fcc-server and fcc-claude in the background
 - `ml --ai codex` : start fcc-codex only (server must be running)

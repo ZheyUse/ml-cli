@@ -2,7 +2,7 @@
 setlocal EnableDelayedExpansion
 
 set "ML_SCRIPT=%~dp0generate-file-structure.php"
-set "ML_VERSION=1.1.18"
+set "ML_VERSION=1.1.19"
 set "PHP_EXE=php"
 if exist "C:\xampp\php\php.exe" set "PHP_EXE=C:\xampp\php\php.exe"
 
@@ -126,6 +126,8 @@ echo   create --rbac      Create RBAC table in userdb
 echo   gen                Generate local PBAC access map (ml gen)
 echo   update             Update ML CLI from remote
 echo   --ai               Start fcc-server and fcc-claude (both visible)
+echo   --ai server        Start fcc-server only (no Claude Code)
+echo   --ai server bg     Start fcc-server only, in the background
 echo   --ai claude        Start fcc-claude only (server must be running)
 echo   --ai bg            Start fcc-server and fcc-claude in background
 echo   --ai codex         Start fcc-codex (server must be running)
@@ -269,6 +271,8 @@ echo Usage: ml --ai [subcommand]
 echo.
 echo Subcommands:
 echo   ml --ai           Start fcc-server and fcc-claude (both visible)
+echo   ml --ai server    Start fcc-server only (no Claude Code)
+echo   ml --ai server bg Start fcc-server only, in the background
 echo   ml --ai claude    Start fcc-claude only (server must be running)
 echo   ml --ai bg        Start fcc-server and fcc-claude in background
 echo   ml --ai codex     Start fcc-codex (server must be running)
@@ -1350,7 +1354,7 @@ if not exist "!LOCAL_AI_SCRIPT!" set "LOCAL_AI_SCRIPT=C:\xampp\htdocs\mlhuillier
 if exist "!LOCAL_AI_SCRIPT!" (
         echo Using local AI helper...
         echo.
-        "%PHP_EXE%" -d display_errors=0 "!LOCAL_AI_SCRIPT!" "!ARG2!"
+        "%PHP_EXE%" -d display_errors=0 "!LOCAL_AI_SCRIPT!" "!ARG2!" "%~3"
         set "RC=%ERRORLEVEL%"
         call :maybe_show_update_notice
         exit /b %RC%
@@ -1377,7 +1381,7 @@ if %ERRORLEVEL% neq 0 (
         exit /b 2
 )
 
-"%PHP_EXE%" -d display_errors=0 "!TMP_FILE!" "!ARG2!"
+"%PHP_EXE%" -d display_errors=0 "!TMP_FILE!" "!ARG2!" "%~3"
 set "RC=%ERRORLEVEL%"
 call :maybe_show_update_notice
 del /f /q "!TMP_FILE!" >nul 2>&1

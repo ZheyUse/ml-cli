@@ -160,12 +160,12 @@ function parseHelpDetails(content) {
 
 function inferCategory(name) {
   const lower = name.toLowerCase();
+  if (lower.includes('--ai')) return 'ai';
   if (lower.includes('migrate')) return 'database';
   if (lower.includes('--b') || lower.includes('userdb') || lower.includes('test') || lower.includes('add')) return 'database';
   if (lower.includes('create') || lower.includes('clone')) return 'project';
   if (lower.includes('serve') || lower.includes('nav')) return 'workflow';
   if (lower.includes('update') || lower.includes('--c') || lower.includes('--v') || lower.includes('--d')) return 'maintenance';
-  if (lower.includes('--ai')) return 'ai';
   return 'general';
 }
 
@@ -259,6 +259,7 @@ function inferExpectedResult(command) {
 
 function inferWhenToUse(command) {
   const lower = command.name.toLowerCase();
+  if (lower.includes('--ai')) return 'When this workflow matches your current task.';
   if (lower.includes('test userdb')) return 'Before development starts or after DB config changes.';
   if (lower.includes('add userdb')) return 'When userdb schema is missing or corrupted.';
   if (lower.includes('create --config')) return 'Before using schema backups or whenever DB credentials change.';
@@ -404,6 +405,24 @@ function buildCommands(content) {
       syntax: 'ml --ai bg',
       params: [],
       expectedResult: 'Both processes start silently in the background. Process PIDs tracked in the ML CLI state file.',
+    },
+    {
+      name: 'ml --ai server',
+      top: '--ai',
+      sub: 'server',
+      helpDescription: 'Start the fcc-server (uvicorn API proxy on port 8082) only — no Claude Code process. Use when you only need the API server for the VS Code extension, or before running ml --ai claude separately.',
+      syntax: 'ml --ai server',
+      params: [],
+      expectedResult: 'fcc-server starts in a visible terminal window on port 8082. No Claude Code process is launched.',
+    },
+    {
+      name: 'ml --ai server bg',
+      top: '--ai',
+      sub: 'server bg',
+      helpDescription: 'Start fcc-server (uvicorn API proxy on port 8082) in the background with no visible window.',
+      syntax: 'ml --ai server bg',
+      params: [],
+      expectedResult: 'fcc-server starts silently in the background. PID tracked in the ML CLI state file. Stop with ml --ai stop.',
     },
     {
       name: 'ml --ai update',
@@ -716,6 +735,8 @@ function buildTutorials(commands) {
       commands: [
         'ml install ai',
         'ml --ai',
+        'ml --ai server',
+        'ml --ai server bg',
         'ml --ai claude',
         'ml --ai bg',
         'ml --ai update',

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-20T01:58:37.647Z",
+  "generatedAt": "2026-07-29T03:51:52.231Z",
   "source": "ml.bat",
-  "cliVersion": "1.1.18",
+  "cliVersion": "1.1.19",
   "commands": [
     {
       "name": "ml --ai",
@@ -148,6 +148,42 @@
       }
     },
     {
+      "name": "ml --ai server",
+      "description": "Start fcc-server only (no Claude Code)",
+      "syntax": "ml --ai server",
+      "params": [],
+      "example": "ml --ai server",
+      "category": "ai",
+      "expectedResult": "Runs the command workflow and returns success or actionable error output.",
+      "tutorial": {
+        "whenToUse": "When this workflow matches your current task.",
+        "scenario": "Typical ai workflow using ml --ai server.",
+        "steps": [
+          "Run: ml --ai server",
+          "Review output and confirm expected result: Runs the command workflow and returns success or actionable error output.",
+          "If it fails, apply the recommended fix from Error Handling then retry."
+        ]
+      }
+    },
+    {
+      "name": "ml --ai server bg",
+      "description": "Start fcc-server only, in the background",
+      "syntax": "ml --ai server bg",
+      "params": [],
+      "example": "ml --ai server bg",
+      "category": "ai",
+      "expectedResult": "Runs the command workflow and returns success or actionable error output.",
+      "tutorial": {
+        "whenToUse": "When this workflow matches your current task.",
+        "scenario": "Typical ai workflow using ml --ai server bg.",
+        "steps": [
+          "Run: ml --ai server bg",
+          "Review output and confirm expected result: Runs the command workflow and returns success or actionable error output.",
+          "If it fails, apply the recommended fix from Error Handling then retry."
+        ]
+      }
+    },
+    {
       "name": "ml --ai stop",
       "description": "Stop all fcc-server, fcc-claude, fcc-codex processes",
       "syntax": "ml --ai stop",
@@ -171,11 +207,11 @@
       "syntax": "ml --ai update",
       "params": [],
       "example": "ml --ai update",
-      "category": "maintenance",
+      "category": "ai",
       "expectedResult": "Runs the command workflow and returns success or actionable error output.",
       "tutorial": {
-        "whenToUse": "When maintaining CLI consistency across machines.",
-        "scenario": "Typical maintenance workflow using ml --ai update.",
+        "whenToUse": "When this workflow matches your current task.",
+        "scenario": "Typical ai workflow using ml --ai update.",
         "steps": [
           "Run: ml --ai update",
           "Review output and confirm expected result: Runs the command workflow and returns success or actionable error output.",
@@ -189,11 +225,11 @@
       "syntax": "ml --ai update-info",
       "params": [],
       "example": "ml --ai update-info",
-      "category": "maintenance",
+      "category": "ai",
       "expectedResult": "Runs the command workflow and returns success or actionable error output.",
       "tutorial": {
-        "whenToUse": "When maintaining CLI consistency across machines.",
-        "scenario": "Typical maintenance workflow using ml --ai update-info.",
+        "whenToUse": "When this workflow matches your current task.",
+        "scenario": "Typical ai workflow using ml --ai update-info.",
         "steps": [
           "Run: ml --ai update-info",
           "Review output and confirm expected result: Runs the command workflow and returns success or actionable error output.",
@@ -1203,6 +1239,8 @@
       "commands": [
         "ml install ai",
         "ml --ai",
+        "ml --ai server",
+        "ml --ai server bg",
         "ml --ai claude",
         "ml --ai bg",
         "ml --ai update",
@@ -1332,6 +1370,26 @@
         ]
       },
       {
+        "command": "ml --ai server",
+        "whenToUse": "When this workflow matches your current task.",
+        "scenario": "Typical ai workflow using ml --ai server.",
+        "steps": [
+          "Run: ml --ai server",
+          "Review output and confirm expected result: Runs the command workflow and returns success or actionable error output.",
+          "If it fails, apply the recommended fix from Error Handling then retry."
+        ]
+      },
+      {
+        "command": "ml --ai server bg",
+        "whenToUse": "When this workflow matches your current task.",
+        "scenario": "Typical ai workflow using ml --ai server bg.",
+        "steps": [
+          "Run: ml --ai server bg",
+          "Review output and confirm expected result: Runs the command workflow and returns success or actionable error output.",
+          "If it fails, apply the recommended fix from Error Handling then retry."
+        ]
+      },
+      {
         "command": "ml --ai stop",
         "whenToUse": "When this workflow matches your current task.",
         "scenario": "Typical ai workflow using ml --ai stop.",
@@ -1343,8 +1401,8 @@
       },
       {
         "command": "ml --ai update",
-        "whenToUse": "When maintaining CLI consistency across machines.",
-        "scenario": "Typical maintenance workflow using ml --ai update.",
+        "whenToUse": "When this workflow matches your current task.",
+        "scenario": "Typical ai workflow using ml --ai update.",
         "steps": [
           "Run: ml --ai update",
           "Review output and confirm expected result: Runs the command workflow and returns success or actionable error output.",
@@ -1353,8 +1411,8 @@
       },
       {
         "command": "ml --ai update-info",
-        "whenToUse": "When maintaining CLI consistency across machines.",
-        "scenario": "Typical maintenance workflow using ml --ai update-info.",
+        "whenToUse": "When this workflow matches your current task.",
+        "scenario": "Typical ai workflow using ml --ai update-info.",
         "steps": [
           "Run: ml --ai update-info",
           "Review output and confirm expected result: Runs the command workflow and returns success or actionable error output.",
