@@ -1,4 +1,4 @@
-# ML CLI (M Lhuillier)
+# ML CLI
 
 Quick install (Windows)
 ```bat
